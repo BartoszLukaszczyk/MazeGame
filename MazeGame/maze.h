@@ -13,7 +13,6 @@
 
 
 class Cell* getCell(int, int);
-//maze.h
 class Maze
 {
 public:
@@ -54,4 +53,4 @@ private slots:
 };
 
 
-#endif // MAZE_H
+#endif 

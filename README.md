@@ -13,13 +13,13 @@ To run the MazeGame, you need to have Qt installed on your system. Once Qt is in
 ## Features
 
 - Dynamic maze generation using depth-first search algorithm
-- Player movement controls (arrow keys)
+- Player movement controls (WSAD keys)
 - Timer to track elapsed time
 - Scoring system based on time taken and shortest path length
 
 ## Usage
 
-1. Use arrow keys to navigate the player through the maze.
+1. Use WSAD keys to navigate the player through the maze.
 2. Try to reach the exit as quickly as possible.
 3. Your score is based on the time taken and shortest path length.
 

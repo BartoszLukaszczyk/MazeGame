@@ -102,8 +102,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     totalSteps++;
     update();
 
-    int maxRow = maze->getRows() - 1;
-    int maxCol = maze->getCols() - 1;
     if (row == maze->getRows() - 1 && col == maze->getCols() - 1) {
         finalTime = elapsedTime; 
         int shortestPathLength = maze->calculateShortestPathLength();

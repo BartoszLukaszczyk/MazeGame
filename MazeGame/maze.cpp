@@ -8,7 +8,8 @@
 #include <QMessageBox>
 #include <queue>
 
-
+// Constructor for the Maze class.
+// Initializes the maze with the given number of rows and columns.
 Maze::Maze(int rows, int cols) : rows(rows), cols(cols) {
     for (int i = 0; i < rows; ++i) {
         std::vector<Cell> row;
@@ -28,7 +29,7 @@ Maze::Maze(int rows, int cols) : rows(rows), cols(cols) {
     generate();
 }
 
-
+// Draws the maze on the specified QPainter.
 void Maze::draw(QPainter &painter) {
     qDebug() << "Drawing maze...";
     painter.fillRect(0, 0, 400, 400, Qt::green);
@@ -40,14 +41,13 @@ void Maze::draw(QPainter &painter) {
     }
 }
 
+// Draws the individual cell on the QPainter.
 void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
     int cellSize = 20; 
 
-    // Obliczamy rzeczywistą pozycję komórki na ekranie
     int x = cell->x * cellSize;
     int y = cell->y * cellSize;
 
-    // Rysujemy ściany komórki
     if (cell->walls[0]) // góra
         painter.drawLine(x, y, x + cellSize, y);
     if (cell->walls[1]) // prawo
@@ -61,11 +61,8 @@ void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
         painter.fillRect(x + 1, y + 1, cellSize - 1, cellSize - 1, playerColor);
         return; 
     }
-
-    // Ustawiamy kolor komórki na zielony jeśli została odwiedzona, na czarny w przeciwnym razie
     QColor color = cell->visited ? Qt::green : Qt::black;
 
-    // Jeśli jesteśmy na pozycji mety (19,19), zmień kolor komórki na czerwony
     if (row == 19 && col == 19) {
         color = Qt::red;
     }
@@ -76,8 +73,7 @@ void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
     painter.fillRect(x + 1, y + 1, cellSize - 1, cellSize - 1, color);
 }
 
-
-
+// Generates the maze using a depth-first search algorithm.
 void Maze::generate() {
     while (!stack.empty()) {
         Cell* current = stack.top();
@@ -94,7 +90,7 @@ void Maze::generate() {
     }
 }
 
-
+// Retrieves the next unvisited neighboring cell.
 Cell* Maze::getNext(Cell* cell) {
     std::vector<Cell*> neighbors;
 
@@ -117,7 +113,7 @@ Cell* Maze::getNext(Cell* cell) {
         return nullptr;
     }
 }
-
+// Removes the wall between two neighboring cells.
 void Maze::removeWall(Cell* a, Cell* b) {
     int dx = b->x - a->x;
     int dy = b->y - a->y;
@@ -139,15 +135,11 @@ void Maze::removeWall(Cell* a, Cell* b) {
         b->walls[2] = false;
     }
 }
-
+// Resets the maze to its initial state.
 void Maze::resetMaze() {
-
-    // Wyczyść stos
     while (!stack.empty()) {
         stack.pop();
     }
-
-    // Wyczyść i zainicjalizuj komórki
     cells.clear();
     for (int i = 0; i < rows; ++i) {
         std::vector<Cell> row;
@@ -156,8 +148,6 @@ void Maze::resetMaze() {
         }
         cells.push_back(row);
     }
-
-    // Rozpocznij algorytm od komórki w lewym górnym rogu
     Cell* current = &cells[0][0];
     current->visited = true;
     stack.push(current);
@@ -165,7 +155,7 @@ void Maze::resetMaze() {
     distances = std::vector<std::vector<int>>(rows, std::vector<int>(cols, -1));
     resetPlayerPosition();
 }
-
+// Checks if there's a wall between two neighboring cells.
 bool Maze::isWallBetween(Cell* a, Cell* b) const {
     int dx = b->x - a->x;
     int dy = b->y - a->y;
@@ -181,8 +171,7 @@ bool Maze::isWallBetween(Cell* a, Cell* b) const {
     }
     return true;
 }
-
-
+// Sets the player's position to the specified row and column.
 void Maze::setPlayerPosition(int row, int col) {
     if (row >= 0 && row < rows && col >= 0 && col < cols) {
         Cell* newCell = &cells[row][col];
@@ -198,25 +187,22 @@ void Maze::setPlayerPosition(int row, int col) {
         }
     }
 }
+// Resets the player's position to the top-left corner.
 void Maze::resetPlayerPosition() {
     cells[playerRow][playerCol].isPlayerHere = false;
     playerRow = 0;
     playerCol = 0;
     cells[playerRow][playerCol].isPlayerHere = true;
 }
-
-
-
-
-
-
+// Retrieves the cell at the specified row and column.
 Cell* Maze::getCell(int row, int col) {
     return &cells[row][col];
 }
-
+// Gets the current player position as a pair of row and column indices.
 std::pair<int, int> Maze::getPlayerPosition() const {
     return std::make_pair(playerRow, playerCol);
 }
+// Calculates the shortest path length from the starting point to the goal using BFS. 
 int Maze::calculateShortestPathLength() {
     std::queue<std::pair<int, int>> q;
     std::vector<std::vector<int>> dist(rows, std::vector<int>(cols, -1));

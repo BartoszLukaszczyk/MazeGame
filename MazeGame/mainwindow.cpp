@@ -19,12 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
     label->show();
     label->setGeometry(650, 520, 100, 30);
     ui->setupUi(this);
-    maze = new Maze(20, 20);  // tworzy nowy labirynt o rozmiarze 20x20
-    scene = new MazeScene(maze);  // inicjalizujemy scenę tutaj
+    maze = new Maze(20, 20);  
+    scene = new MazeScene(maze);  
     ui->MazeGraphicsView->setScene(scene);
-    // Ustawienie skali na 1:1
     ui->MazeGraphicsView->resetTransform();
-    // Centrowanie widoku na punkcie (0,0) sceny
     ui->MazeGraphicsView->centerOn(0, 0);
     maze->setPlayerPosition(0, 0);
 
@@ -71,12 +69,10 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    // Pobieranie aktualnej pozycji gracza
     std::pair<int, int> position = maze->getPlayerPosition();
     int row = position.first;
     int col = position.second;
 
-    // Sprawdzanie, który klawisz został naciśnięty i akualizowanie pozycji gracza
     switch (event->key()) {
     case Qt::Key_A:
         col--;
@@ -93,8 +89,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key_R:
         break;
     }
-
-    // Malowanie komórki gracza
+    
     QPainter painter(ui->MazeGraphicsView->viewport());
     maze->setPlayerPosition(row, col);
     totalSteps++;
@@ -103,7 +98,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     int maxRow = maze->getRows() - 1;
     int maxCol = maze->getCols() - 1;
     if (row == maze->getRows() - 1 && col == maze->getCols() - 1) {
-        finalTime = elapsedTime; // zapisz ostateczny czas
+        finalTime = elapsedTime; 
         int shortestPathLength = maze->calculateShortestPathLength();
         float score = 10*  (100 - static_cast<float>(finalTime)/shortestPathLength * 100) + shortestPathLength / 4;
         int roundedScore = qRound(score);

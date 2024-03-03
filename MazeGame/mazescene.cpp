@@ -4,8 +4,8 @@
 
 MazeScene::MazeScene(Maze *maze) : maze(maze)
 {
-    int sceneWidth = maze->getCols() * 20; // Szerokość sceny w zależności od liczby kolumn
-    int sceneHeight = maze->getRows() * 20; // Wysokość sceny w zależności od liczby wierszy
+    int sceneWidth = maze->getCols() * 20; // Maze width depends on number of columns
+    int sceneHeight = maze->getRows() * 20; // Maze height depends on number of rows
     setSceneRect(0, 0, sceneWidth, sceneHeight);
 }
 

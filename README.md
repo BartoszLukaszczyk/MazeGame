@@ -25,7 +25,7 @@ To run the MazeGame, you need to have Qt installed on your system. Once Qt is in
 
 ## License
 
-MazeGame is released under the [MIT License](LICENSE).
+MazeGame is released under the [MIT License]([LICENSE](https://opensource.org/license/mit)https://opensource.org/license/mit).
 
 ## Author
 

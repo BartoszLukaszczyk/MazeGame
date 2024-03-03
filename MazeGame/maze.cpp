@@ -7,7 +7,6 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <queue>
-//#include <QTimer>
 
 
 Maze::Maze(int rows, int cols) : rows(rows), cols(cols) {
@@ -33,7 +32,6 @@ Maze::Maze(int rows, int cols) : rows(rows), cols(cols) {
 void Maze::draw(QPainter &painter) {
     qDebug() << "Drawing maze...";
     painter.fillRect(0, 0, 400, 400, Qt::green);
-    // Rysuj siatkę kwadratów
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
 
@@ -43,7 +41,7 @@ void Maze::draw(QPainter &painter) {
 }
 
 void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
-    int cellSize = 20; // Załóżmy, że każda komórka ma rozmiar 20x20 pikseli
+    int cellSize = 20; 
 
     // Obliczamy rzeczywistą pozycję komórki na ekranie
     int x = cell->x * cellSize;
@@ -61,7 +59,7 @@ void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
     if (cell->isPlayerHere) {
         QColor playerColor = Qt::blue;
         painter.fillRect(x + 1, y + 1, cellSize - 1, cellSize - 1, playerColor);
-        return; // Return to avoid changing the color of the cell
+        return; 
     }
 
     // Ustawiamy kolor komórki na zielony jeśli została odwiedzona, na czarny w przeciwnym razie
@@ -75,7 +73,6 @@ void Maze::drawCell(QPainter &painter, Cell *cell, int row, int col) {
         color = Qt::blue;
     }
 
-    // Wypełniamy komórkę kolorem
     painter.fillRect(x + 1, y + 1, cellSize - 1, cellSize - 1, color);
 }
 
@@ -92,7 +89,6 @@ void Maze::generate() {
             next->visited = true;
             stack.push(next);
         } else {
-            // Jeśli nie ma nieodwiedzonych sąsiadów, usuń obecną komórkę ze stosu
             stack.pop();
         }
     }
@@ -102,19 +98,15 @@ void Maze::generate() {
 Cell* Maze::getNext(Cell* cell) {
     std::vector<Cell*> neighbors;
 
-    // Sprawdź sąsiada z góry
     if (cell->y > 0 && !cells[cell->y - 1][cell->x].visited)
         neighbors.push_back(&cells[cell->y - 1][cell->x]);
 
-    // Sprawdź sąsiada z prawej strony
     if (cell->x < cols - 1 && !cells[cell->y][cell->x + 1].visited)
         neighbors.push_back(&cells[cell->y][cell->x + 1]);
 
-    // Sprawdź sąsiada z dołu
     if (cell->y < rows - 1 && !cells[cell->y + 1][cell->x].visited)
         neighbors.push_back(&cells[cell->y + 1][cell->x]);
 
-    // Sprawdź sąsiada z lewej strony
     if (cell->x > 0 && !cells[cell->y][cell->x - 1].visited)
         neighbors.push_back(&cells[cell->y][cell->x - 1]);
 
@@ -130,23 +122,18 @@ void Maze::removeWall(Cell* a, Cell* b) {
     int dx = b->x - a->x;
     int dy = b->y - a->y;
 
-    // Usuń odpowiednią ścianę z każdej z komórek, a i b
-    // Jeżeli komórka b znajduje się na wschód od komórki a
     if (dx == 1) {
         a->walls[1] = false;
         b->walls[3] = false;
     }
-    // Jeżeli komórka b znajduje się na zachód od komórki a
     else if (dx == -1) {
         a->walls[3] = false;
         b->walls[1] = false;
     }
-    // Jeżeli komórka b znajduje się na południe od komórki a
     else if (dy == 1) {
         a->walls[2] = false;
         b->walls[0] = false;
     }
-    // Jeżeli komórka b znajduje się na północ od komórki a
     else if (dy == -1) {
         a->walls[0] = false;
         b->walls[2] = false;
@@ -183,7 +170,6 @@ bool Maze::isWallBetween(Cell* a, Cell* b) const {
     int dx = b->x - a->x;
     int dy = b->y - a->y;
 
-    // Sprawdzamy, czy istnieje ściana między komórką a i b
     if (dx == 1) {
         return a->walls[1] || b->walls[3];
     } else if (dx == -1) {

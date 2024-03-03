@@ -9,6 +9,8 @@
 #include <QString>
 #include <QLabel>
 
+// Constructor for the MainWindow class.
+// Sets up the UI elements and initializes the maze.
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -41,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
     timerLabel->show();
     setWindowTitle("MazeGame");
 }
-
+// Destructor for the MainWindow class.
+// Cleans up memory by deleting the UI, maze, scene, timer, and timer label objects.
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -50,7 +53,8 @@ MainWindow::~MainWindow()
     delete timer;
     delete timerLabel;
 }
-
+// Slot function triggered when the "Generate" button is clicked.
+// Resets the maze, player position, and elapsed time.
 void MainWindow::onGenerateButtonClicked()
 {
     maze->setPlayerPosition(0, 0);
@@ -59,14 +63,17 @@ void MainWindow::onGenerateButtonClicked()
     ui->MazeGraphicsView->viewport()->update();
 
 }
-
+// Event handler for painting on the MainWindow.
+// Draws the maze using QPainter.
 void MainWindow::paintEvent(QPaintEvent *event) {
     QPainter painter(ui->MazeGraphicsView->viewport());
     maze->draw(painter);
     QMainWindow::paintEvent(event);
     ui->MazeGraphicsView->viewport()->update();
 }
-
+// Event handler for key press events.
+// Moves the player based on the arrow keys (up, down, left, right).
+// Calculates the score and displays a congratulatory message if the player reaches the exit.
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     std::pair<int, int> position = maze->getPlayerPosition();
@@ -106,7 +113,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         QMessageBox msgBox;
         msgBox.setText(
             QString("<div align='center'><b>Congratulations!</b><br/>"
-                    "You Find Escape.<br/>"
+                    "You Found a Way Out.<br/>"
                     "Your Time: %1 s.<br/>"
                     "Path Lenght: %2.</div>"
                     "<div align='center'><b>Score: %3.</b></div>")
@@ -118,10 +125,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         totalSteps = 0;
     }
 }
+// Slot function to update the timer label.
+// Increments the elapsed time and updates the timer label text.
 void MainWindow::updateTimer() {
     elapsedTime++;
     timerLabel->setText(QString("Time: %1s").arg(elapsedTime));
 }
+// Slot function triggered when the "Reset" button is clicked.
+// Resets the maze and player position.
 void MainWindow::on_pushButton_clicked()
 {
     maze->resetPlayerPosition();
